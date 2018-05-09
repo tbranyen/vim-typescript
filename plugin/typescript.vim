@@ -7,8 +7,10 @@ function! BackgroundCommandClose(channel)
   " Read into quickfix
   execute "cfile! " . g:backgroundCommandOutput
 
+
   if len(g:contents) > 0
     copen
+    wincmd p
   else
     cclose
   endif
