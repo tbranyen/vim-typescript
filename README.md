@@ -25,13 +25,6 @@ First clone the repo:
 git clone https://github.com/tbranyen/vim-typescript
 ```
 
-Then install the backup TypeScript compiler:
-
-``` sh
-cd vim-typescript
-npm install
-```
-
 Now symlink the plugin into your plugins folder:
 
 ``` sh
