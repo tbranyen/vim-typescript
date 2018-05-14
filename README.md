@@ -28,7 +28,7 @@ git clone https://github.com/tbranyen/vim-typescript
 Now symlink the plugin into your plugins folder:
 
 ``` sh
-ln -s vim-typescript/plugin/typescript.vim ~/.vim/plugins/
+ln -s vim-typescript/plugin/typescript.vim ~/.vim/plugin/
 ```
 
 Finally set a variable in your `.vimrc` pointing to the location of your
