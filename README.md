@@ -36,7 +36,7 @@ vim-typescript folder.
 
 ``` vimrc
 " Example ~/.vimrc
-let g:path_to_ts_plugin = '/path/to/vim-typescript/'
+let g:ts_path_to_plugin = '/path/to/vim-typescript/'
 ```
 
 MIT License 2018
