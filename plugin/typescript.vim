@@ -5,30 +5,29 @@
 " Inspired by http://andrewvos.com/writing-async-jobs-in-vim-8
 
 " This callback will be executed when the entire command is completed
-function! BackgroundCommandClose()
-  " Ensure the background command exists before doing any testing.
-  if exists("g:ts_background_output_file")
-    " Ensure the background command has output.
-    if len(g:ts_background_output_file)
-      " Pull the contents from the output file.
-      let a:contents = readfile(g:ts_background_output_file)
+function! BackgroundCommandClose(channel)
+  let status = ch_status(a:channel, { 'part': 'out' })
 
-      " Read into quickfix
-      execute "cfile! " . g:ts_background_output_file
+  " If there is output to display, read into quickfix.
+  if status == "buffered"
+    let output = ch_readraw(a:channel, { 'part': 'out' })
 
-      " Automatically open the quickfix window on errors, close once fixed.
-      if g:ts_auto_open_quickfix == 1
-        if len(a:contents) > 0
-          copen
-          wincmd p
-        else
-          cclose
-        endif
+    " Put the output into quickfix.
+    cgetexpr output
+
+    " Automatically open the quickfix window on errors, close once fixed.
+    if g:ts_auto_open_quickfix == 1
+      if len(contents) > 0
+        copen
+        " Toggle back to original buffer.
+        wincmd p
+      else
+        cclose
       endif
-
-      " Clear out the variable contents.
-      unlet g:ts_background_output_file
     endif
+  " Else wipe out quickfix contents.
+  else
+    cgetexpr ""
   endif
 endfunction
 
@@ -40,9 +39,6 @@ function! RunBackgroundTSC()
     return
   endif
 
-  " Generate a background file to capture output into.
-  let g:ts_background_output_file = tempname()
-
   let a:args = [
   \ 'node',
   \ g:ts_path_to_plugin . 'lib/controller',
@@ -52,9 +48,7 @@ function! RunBackgroundTSC()
   \]
 
   let a:opts = {
-  \ 'close_cb': 'BackgroundCommandClose',
-  \ 'out_io': 'file',
-  \ 'out_name': g:ts_background_output_file
+  \ 'close_cb': 'BackgroundCommandClose'
   \}
 
   call job_start(a:args, a:opts)
