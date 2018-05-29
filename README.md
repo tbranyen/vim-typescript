@@ -5,12 +5,14 @@
 </p>
 
 A fast plugin that runs the TypeScript compiler in the background and writing
-output to the quickfix window.
+output to the quickfix window. Will additionally run tslint if it is present
+in your project.
 
 **High level features:**
 
 - Uses a locally installed TypeScript compiler, or the default built in.
-- Asynchronously runs the TypeScript compiler behind-the-scenes.
+- Will run tslint if you define a tsconfig.json and have it installed.
+- Transparently runs the compiler and linter as an async background process.
 
 Pairs great with [vim-hier](https://github.com/jceb/vim-hier)! This plugin
 highlights Quickfix errors and will help you visually see where problems are.
@@ -38,5 +40,10 @@ vim-typescript folder.
 " Example ~/.vimrc
 let g:ts_path_to_plugin = '/path/to/vim-typescript/'
 ```
+
+## Configuration options
+
+- `g:ts_path_to_plugin = '<string>'` - Path to the vim-typescript plugin
+- `g:ts_auto_open_quickfix = 0 | 1` - Automatically open and close the QuickFix window
 
 MIT License 2018
