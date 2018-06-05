@@ -7,11 +7,15 @@
 " This callback will be executed when the entire command is completed
 function! BackgroundCommandClose(channel)
   let status = ch_status(a:channel, { 'part': 'out' })
+  let output = ''
 
-  " If there is output to display, read into quickfix.
-  if status == "buffered"
-    let output = ch_readraw(a:channel, { 'part': 'out' })
+  " If there is output to display, read into variable.
+  while ch_status(a:channel, { 'part': 'out' }) == 'buffered'
+    let l:output .= ch_read(a:channel) . "\x0a"
+  endwhile
 
+  " If output exists, pump into quickfix
+  if len(output)
     " Put the output into quickfix.
     cgetexpr output
 
@@ -54,4 +58,4 @@ function! RunBackgroundTSC()
   call job_start(a:args, a:opts)
 endfunction
 
-autocmd! BufReadPost,BufWritePost *.ts silent! :call RunBackgroundTSC()
+autocmd! BufReadPost,BufWritePost,TextChanged *.ts silent! :call RunBackgroundTSC()
