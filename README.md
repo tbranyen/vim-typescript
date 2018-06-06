@@ -5,14 +5,12 @@
 </p>
 
 A fast plugin that runs the TypeScript compiler in the background and writing
-output to the quickfix window. Will additionally run tslint if it is present
-in your project.
+output to the quickfix window.
 
 **High level features:**
 
 - Uses a locally installed TypeScript compiler, or the default built in.
-- Will run tslint if you define a tsconfig.json and have it installed.
-- Transparently runs the compiler and linter as an async background process.
+- Transparently runs the compiler as an async background process.
 
 Pairs great with [vim-hier](https://github.com/jceb/vim-hier)! This plugin
 highlights Quickfix errors and will help you visually see where problems are.
