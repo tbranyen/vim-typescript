@@ -1,21 +1,21 @@
-" vim-typescript - 1.0.0 - Runs the TypeScript compiler and TSLint in a
-" background process, catpures output to QuickFix window.
+" vim-typescript - 1.0.0 - Runs the TypeScript compiler in a background
+" process, catpures output to QuickFix window.
 "
 " Tim Branyen (@tbranyen)
-" Inspired by http://andrewvos.com/writing-async-jobs-in-vim-8
+" Originally inspired by http://andrewvos.com/writing-async-jobs-in-vim-8
 
 " This callback will be executed when the entire command is completed
 function! BackgroundCommandClose(channel)
-  let status = ch_status(a:channel, { 'part': 'out' })
-  let output = ''
+  let status = ch_status(a:channel, { "part": "out" })
+  let output = ""
 
   " If there is output to display, read into variable.
-  while ch_status(a:channel, { 'part': 'out' }) == 'buffered'
+  while ch_status(a:channel, { "part": "out" }) == "buffered"
     let l:output .= ch_read(a:channel) . "\x0a"
   endwhile
 
   " If output exists, pump into quickfix
-  if len(output)
+  if len(output) > 1
     " Put the output into quickfix.
     cgetexpr output
 
@@ -39,23 +39,23 @@ endfunction
 function! RunBackgroundTSC()
   " Safety check to ensure the proper VIM version is installed.
   if v:version < 800
-    echoerr 'VIM TypeScript requires VIM version 8 or higher'
+    echoerr "VIM TypeScript requires VIM version 8 or higher"
     return
   endif
 
   let a:args = [
-  \ 'node',
-  \ g:ts_path_to_plugin . 'lib/controller',
-  \ '--skipLibCheck',
-  \ '--noEmit',
-  \ expand('%')
+  \ "node",
+  \ g:ts_path_to_plugin . "lib/controller",
+  \ "--skipLibCheck",
+  \ "--noEmit",
+  \ expand("%")
   \]
 
   let a:opts = {
-  \ 'close_cb': 'BackgroundCommandClose'
+  \ "close_cb": "BackgroundCommandClose"
   \}
 
   call job_start(a:args, a:opts)
 endfunction
 
-autocmd! BufReadPost,BufWritePost,TextChanged *.ts silent! :call RunBackgroundTSC()
+autocmd! BufReadPost,BufWritePost *.ts silent! :call RunBackgroundTSC()
