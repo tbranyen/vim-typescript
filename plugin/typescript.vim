@@ -45,7 +45,7 @@ function! RunBackgroundTSC()
 
   let a:args = [
   \ "node",
-  \ g:ts_path_to_plugin . "lib/controller",
+  \ g:ts_path_to_plugin . "vim-typescript.js",
   \ "--skipLibCheck",
   \ "--noEmit",
   \ expand("%")
