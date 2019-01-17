@@ -58,4 +58,4 @@ function! RunBackgroundTSC()
   call job_start(a:args, a:opts)
 endfunction
 
-autocmd! BufReadPost,BufWritePost *.ts silent! :call RunBackgroundTSC()
+autocmd! BufReadPost,BufWritePost *.ts,*.tsx silent! :call RunBackgroundTSC()
