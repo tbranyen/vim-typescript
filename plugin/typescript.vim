@@ -43,19 +43,19 @@ function! RunBackgroundTSC()
     return
   endif
 
-  let a:args = [
+  let l:args = [
   \ "node",
   \ g:ts_path_to_plugin . "vim-typescript.js",
   \ "--skipLibCheck",
   \ "--noEmit",
-  \ expand("%")
+  \ expand("%:p")
   \]
 
-  let a:opts = {
+  let l:opts = {
   \ "close_cb": "BackgroundCommandClose"
   \}
 
-  call job_start(a:args, a:opts)
+  call job_start(l:args, l:opts)
 endfunction
 
-autocmd! BufReadPost,BufWritePost *.ts,*.tsx silent! :call RunBackgroundTSC()
+autocmd! BufReadPost,BufWritePost *.ts,*.tsx :call RunBackgroundTSC()
